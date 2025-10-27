@@ -33,19 +33,13 @@ RUN python -m venv /opt/venv && \
 # Exporter et installer les dépendances dans le venv
 RUN poetry export -f requirements.txt --output requirements.txt --without-hashes --only=main && \
     /opt/venv/bin/pip install --no-cache-dir -r requirements.txt && \
-    /opt/venv/bin/pip install --no-cache-dir \
-        uvicorn[standard]==0.24.0 \
-        fastapi>=0.115.0 \             
-        ecdsa>=0.19.2 \                
-        python-multipart>=0.0.18 \     
-        starlette>=0.40.0              
-
+    /opt/venv/bin/pip install --no-cache-dir uvicorn[standard]==0.24.0
 
 # ===================================
 # ÉTAPE 2 : DISTROLESS PYTHON DEBIAN 12
 # ===================================
 FROM gcr.io/distroless/python3-debian12
-USER 65532:65532
+
 # Définir les variables d'environnement Python
 ENV PYTHONPATH=/opt/venv/lib/python3.11/site-packages \
     PATH=/opt/venv/bin:$PATH

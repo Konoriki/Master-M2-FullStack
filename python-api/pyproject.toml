@@ -8,17 +8,14 @@ packages = [{include = "app"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
-fastapi = ">=0.115.0"
+fastapi = "^0.104.0"
 uvicorn = {extras = ["standard"], version = "^0.24.0"}
 sqlalchemy = "^2.0.0"
 psycopg2-binary = "^2.9.9"
 pydantic = "^2.4.0"
-python-multipart = ">=0.0.18"
+python-multipart = "^0.0.6"
 python-jose = {extras = ["cryptography"], version = "^3.3.0"}
 passlib = {extras = ["bcrypt"], version = "^1.7.4"}
-# Dépendances ajoutées/contraintes pour corriger des CVE connues
-ecdsa = ">=0.19.2"
-starlette = ">=0.40.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.0"
