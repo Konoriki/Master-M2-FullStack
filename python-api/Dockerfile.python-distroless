@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     gcc \
     g++ \
+    curl \                      # 🆕 MODIF : ajout de curl (utile pour Poetry ou pip)
     && rm -rf /var/lib/apt/lists/*
 
 # Installer Poetry avec version fixe pour la reproductibilité
@@ -33,12 +34,20 @@ RUN python -m venv /opt/venv && \
 # Exporter et installer les dépendances dans le venv
 RUN poetry export -f requirements.txt --output requirements.txt --without-hashes --only=main && \
     /opt/venv/bin/pip install --no-cache-dir -r requirements.txt && \
-    /opt/venv/bin/pip install --no-cache-dir uvicorn[standard]==0.24.0
+    /opt/venv/bin/pip install --no-cache-dir \
+        uvicorn[standard]==0.24.0 \
+        fastapi>=0.115.0 \             # 🆕 MODIF : ajout de versions corrigées
+        ecdsa>=0.19.2 \                # 🆕 MODIF : version non vulnérable
+        python-multipart>=0.0.18 \     # 🆕 MODIF : version non vulnérable
+        starlette>=0.40.0              # 🆕 MODIF : version non vulnérable
 
 # ===================================
 # ÉTAPE 2 : DISTROLESS PYTHON DEBIAN 12
 # ===================================
 FROM gcr.io/distroless/python3-debian12
+
+# 🆕 MODIF : exécuter le conteneur en mode non-root (UID distroless par défaut)
+USER 65532:65532
 
 # Définir les variables d'environnement Python
 ENV PYTHONPATH=/opt/venv/lib/python3.11/site-packages \
@@ -68,3 +77,5 @@ CMD ["app.main:app", "--host", "0.0.0.0", "--port", "8000"]
 # 4. Pas de package manager en production
 # 5. Impossibilité d'installer des outils malveillants
 # 6. Conformité aux standards de sécurité
+# 7. 🆕 Exécution en utilisateur non-root (USER 65532)
+# 8. 🆕 Versions corrigées des paquets vulnérables
