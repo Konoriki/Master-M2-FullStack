@@ -11,7 +11,7 @@ jobs:
       - name: Build Node.js image
         run: |
           cd node-api
-          docker build -t node-api:test -f Dockerfile.distroless .
+          docker build --pull -t node-api:test -f Dockerfile.distroless .
 
       - name: Mettre à jour l'image de base Python (Builder)
         run: docker pull python:3.11-slim-bookworm
@@ -22,12 +22,12 @@ jobs:
       - name: Build Python image
         run: |
           cd python-api
-          docker build -t python-api:test -f Dockerfile.python-distroless .
+          docker build --pull -t python-api:test -f Dockerfile.python-distroless .
       
       - name: Build Java image
         run: |
           cd java-api
-          docker build -t java-api:test -f Dockerfile.java-distroless .
+          docker build --pull -t java-api:test -f Dockerfile.java-distroless .
       
       - name: Scan Node.js with Trivy
         uses: aquasecurity/trivy-action@master
