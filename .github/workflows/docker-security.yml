@@ -12,7 +12,13 @@ jobs:
         run: |
           cd node-api
           docker build -t node-api:test -f Dockerfile.distroless .
-      
+
+      - name: Mettre à jour l'image de base Python (Builder)
+        run: docker pull python:3.11-slim-bookworm
+
+      - name: Mettre à jour l'image de base Python (Distroless)
+        run: docker pull gcr.io/distroless/python3-debian12
+
       - name: Build Python image
         run: |
           cd python-api
