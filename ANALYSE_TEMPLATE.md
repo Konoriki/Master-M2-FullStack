@@ -1,7 +1,7 @@
 Template d'analyse - TP Docker Avancé
-**Nom :** [Votre nom]  
+**Nom :** MOSLEH Nassim  
 **Date :** [Date]  
-**Groupe :** [Votre groupe]
+**Groupe :** Dev WEB
 
 ---
 Résumé exécutif
@@ -25,37 +25,43 @@ Partie 1 - API Node.js
 
 | Version | Taille | Réduction | Temps de build |
 |---------|--------|-----------|----------------|
-| Standard | [X] MB | - | [X] min |
-| Multi-stage | [X] MB | [X]% | [X] min |
-| Distroless | [X] MB | [X]% | [X] min |
+| Standard | [1380] MB | - | [27] secondes |
+| Multi-stage | [262] MB | [67]% | [54] secondes |
+| Distroless | [125] MB | [91%]% | [73] secondes |
 
 1.2 Analyse des vulnérabilités
 
 | Version | Critical | High | Medium | Low | Total |
 |---------|----------|------|--------|-----|-------|
-| Standard | [X] | [X] | [X] | [X] | [X] |
-| Multi-stage | [X] | [X] | [X] | [X] | [X] |
-| Distroless | [X] | [X] | [X] | [X] | [X] |
+| Standard | [0] | [2] | [0] | [1] | [3] |
+| Multi-stage | [X] | [X] | [7] | [5] | [12] |
+| Distroless | [X] | [X] | [X] | [12] | [12] |
 
 1.3 Analyse des layers avec dive
 
 **Screenshot de l'analyse dive pour l'image standard :**
 ```
-[Insérer ici le screenshot de dive pour node-api:standard]
+![alt text](dive-node-standard.png)
 ```
 
 **Screenshot de l'analyse dive pour l'image distroless :**
 ```
-[Insérer ici le screenshot de dive pour node-api:distroless]
+![alt text](dive-node-distroless.png)
 ```
 
 1.4 Observations techniques
 
 **Problèmes rencontrés :**
-- [Décrire les problèmes rencontrés]
+L'image standard inclut une distribution Linux complète (Debian), ce qui augmente la taille à 1.4GB et le temps de transfert réseau.
+
+Le dossier node_modules contient souvent des fichiers de développement inutiles en production.
+
+Erreur npm ci rencontrée lors du build multi-stage car le package-lock.json était manquant.
 
 **Solutions appliquées :**
-- [Décrire les solutions]
+Multi-stage building : Séparation de l'étape de construction (avec les outils de compilation) et de l'étape d'exécution.
+
+Images Distroless : Utilisation de gcr.io/distroless/nodejs pour supprimer le système d'exploitation (pas de shell, pas de gestionnaire de paquets), ne gardant que le runtime Node.js.
 
 **Points d'amélioration :**
 - [Décrire les améliorations possibles]
@@ -67,10 +73,10 @@ Partie 2 - API Python FastAPI
 
 | Métrique | Valeur |
 |----------|--------|
-| Taille finale | [X] MB |
-| Temps de build | [X] min |
-| Vulnérabilités | [X] |
-| Layers | [X] |
+| Taille finale | [173] MB |
+| Temps de build | [1m44] min |
+| Vulnérabilités | [63] |
+| Layers | [51] |
 
 2.2 Test de l'application
 
